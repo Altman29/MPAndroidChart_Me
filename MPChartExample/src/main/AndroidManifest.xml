@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CombinedChartActivity"
+            android:name=".notimportant.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,7 +45,7 @@
         <activity android:name="LineChartActivityColored" />
         <activity android:name="DynamicalAddingActivity" />
         <activity android:name="RealtimeLineChartActivity" />
-<!--        <activity android:name="CombinedChartActivity" />-->
+        <activity android:name="CombinedChartActivity" />
         <activity android:name="PerformanceLineChart" />
         <activity android:name="BarChartActivitySinus" />
         <activity android:name="ScrollViewActivity" />

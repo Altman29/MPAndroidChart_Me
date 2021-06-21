@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.charts.CombinedChart.DrawOrder;
 import com.github.mikephil.charting.components.AxisBase;
@@ -35,11 +37,10 @@ import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class CombinedChartActivity extends DemoBase {
+public class CombinedChartActivity extends AppCompatActivity {
 
     /**
      *
@@ -66,6 +67,7 @@ public class CombinedChartActivity extends DemoBase {
         chart.setHighlightFullBarEnabled(false);
         chart.setScaleEnabled(false);
         chart.setTouchEnabled(false);
+        chart.setExtraBottomOffset(14f);
 
         // draw bars behind lines
         chart.setDrawOrder(new DrawOrder[]{
@@ -74,18 +76,26 @@ public class CombinedChartActivity extends DemoBase {
 
         //设置图例相关
         Legend l = chart.getLegend();
+        l.setEnabled(false);
         l.setWordWrapEnabled(true);
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setForm(Legend.LegendForm.CIRCLE);//统一设置图例样式
         l.setDrawInside(false);
-        l.setXEntrySpace(20f);//图例间距
+        l.setTextSize(12f);
+        l.setFormToTextSpace(8f);//设置图例(形状)和标签的间距
+        l.setXEntrySpace(8f);//X轴上图例间距
+        l.setYEntrySpace(8f);//Y轴上图例间距
+        //以百分比为单位，将整个图表视图相对整个父类View设置百分比。默认0.95f(95%).超过则换行。(但是换行后因为设置了xEntrySpace不再居左)
+        l.setMaxSizePercent(0.95f);
 
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setDrawGridLines(false);
         rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
         rightAxis.setGranularity(1);
+        rightAxis.setTextColor(Color.parseColor("#FFC4C4CC"));
+        rightAxis.setTextSize(12f);
         rightAxis.setAxisMaximum(5f);//基本坐标0-5，真实值在setValuesFormatter中设置
         rightAxis.setYOffset(-10f);//right Y values向上偏移
         rightAxis.setDrawAxisLine(false);//只画值，不画线
@@ -101,6 +111,8 @@ public class CombinedChartActivity extends DemoBase {
         leftAxis.setDrawGridLines(true);
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
         leftAxis.setGranularity(1f);
+        leftAxis.setTextColor(Color.parseColor("#FFC4C4CC"));
+        leftAxis.setTextSize(12f);
         leftAxis.setAxisMaximum(5f);//基本坐标0-5，真实值在setValuesFormatter中设置
         leftAxis.setGridLineWidth(0.5f);
         leftAxis.setYOffset(-10f);//left Y values向上偏移
@@ -120,6 +132,8 @@ public class CombinedChartActivity extends DemoBase {
         xAxis.setDrawGridLines(false);//只画值，不画线
         xAxis.setAxisMinimum(0f);//最小0
         xAxis.setGranularity(1f);//粒度1
+        xAxis.setTextColor(Color.parseColor("#FFC4C4CC"));
+        xAxis.setTextSize(12f);
         xAxis.setCenterAxisLabels(true);//针对每个X坐标，X的坐标显示居中
         //底部X轴显示
         xAxis.setValueFormatter(new IAxisValueFormatter() {
@@ -136,12 +150,16 @@ public class CombinedChartActivity extends DemoBase {
         // data.setData(generateBubbleData());
         // data.setData(generateScatterData());
         // data.setData(generateCandleData());
-        data.setValueTypeface(tfLight);//字体
+        // data.setValueTypeface(tfLight);//字体
 
         xAxis.setAxisMaximum(data.getXMax() + 0.5f);//just show nice
 
         chart.setData(data);
         chart.invalidate();
+    }
+
+    protected float getRandom(float range, float start) {
+        return (float) (Math.random() * range) + start;
     }
 
     private LineData generateLineData() {
@@ -164,7 +182,7 @@ public class CombinedChartActivity extends DemoBase {
         set.setMode(LineDataSet.Mode.CUBIC_BEZIER);//三次贝塞尔曲线
         set.setDrawValues(isShowValues);
         set.setValueTextSize(10f);
-        set.setValueTextColor(Color.parseColor("#000000"));
+        set.setValueTextColor(Color.parseColor("#FFC4C4CC"));
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         d.addDataSet(set);
 
@@ -187,7 +205,7 @@ public class CombinedChartActivity extends DemoBase {
         BarDataSet set1 = new BarDataSet(entries1, "约定时长");
         set1.setColor(Color.parseColor("#FF72A4E1"));
         set1.setDrawValues(isShowValues);
-        set1.setValueTextColor(Color.rgb(60, 220, 78));
+        set1.setValueTextColor(Color.parseColor("#FFC4C4CC"));
         set1.setValueTextSize(10f);
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
 
@@ -195,7 +213,7 @@ public class CombinedChartActivity extends DemoBase {
         set2.setStackLabels(new String[]{"睡眠时长", "卧床时长"});
         set2.setColors(Color.parseColor("#FF7B72E1"), Color.parseColor("#FFE4E2FB"));
         set2.setDrawValues(isShowValues);
-        set2.setValueTextColor(Color.rgb(61, 165, 255));
+        set2.setValueTextColor(Color.parseColor("#FFC4C4CC"));
         set2.setValueTextSize(10f);
         set2.setAxisDependency(YAxis.AxisDependency.LEFT);
 
@@ -320,6 +338,4 @@ public class CombinedChartActivity extends DemoBase {
         return true;
     }
 
-    @Override
-    public void saveToGallery() { /* Intentionally left empty */ }
 }
