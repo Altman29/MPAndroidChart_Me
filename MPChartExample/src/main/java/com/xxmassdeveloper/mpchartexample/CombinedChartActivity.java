@@ -69,27 +69,27 @@ public class CombinedChartActivity extends DemoBase {
 
         // draw bars behind lines
         chart.setDrawOrder(new DrawOrder[]{
-                // DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
                 DrawOrder.BAR, DrawOrder.LINE
-
         });
 
+        //设置图例相关
         Legend l = chart.getLegend();
         l.setWordWrapEnabled(true);
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setForm(Legend.LegendForm.CIRCLE);
+        l.setForm(Legend.LegendForm.CIRCLE);//统一设置图例样式
         l.setDrawInside(false);
-        l.setXEntrySpace(20f);
+        l.setXEntrySpace(20f);//图例间距
 
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setDrawGridLines(false);
         rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-        rightAxis.setAxisMaximum(5f);
         rightAxis.setGranularity(1);
-        rightAxis.setYOffset(-10f);
-        rightAxis.setDrawAxisLine(false);
+        rightAxis.setAxisMaximum(5f);//基本坐标0-5，真实值在setValuesFormatter中设置
+        rightAxis.setYOffset(-10f);//right Y values向上偏移
+        rightAxis.setDrawAxisLine(false);//只画值，不画线
+        //右侧Y轴显示
         rightAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
@@ -101,12 +101,13 @@ public class CombinedChartActivity extends DemoBase {
         leftAxis.setDrawGridLines(true);
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
         leftAxis.setGranularity(1f);
-        leftAxis.setAxisMaximum(5f);
+        leftAxis.setAxisMaximum(5f);//基本坐标0-5，真实值在setValuesFormatter中设置
         leftAxis.setGridLineWidth(0.5f);
-        leftAxis.setYOffset(-10f);
+        leftAxis.setYOffset(-10f);//left Y values向上偏移
         leftAxis.setGridDashedLine(new DashPathEffect(new float[]{8f, 8f}, 8f));
         leftAxis.setGridColor(Color.parseColor("#E1E1E1"));
-        leftAxis.setDrawAxisLine(false);
+        leftAxis.setDrawAxisLine(false);//只画值，不画线
+        //左侧Y轴显示
         leftAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
@@ -115,11 +116,12 @@ public class CombinedChartActivity extends DemoBase {
         });
 
         XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
+        xAxis.setPosition(XAxisPosition.BOTTOM);//X轴设置在底部
+        xAxis.setDrawGridLines(false);//只画值，不画线
         xAxis.setAxisMinimum(0f);//最小0
         xAxis.setGranularity(1f);//粒度1
-        xAxis.setCenterAxisLabels(true);
+        xAxis.setCenterAxisLabels(true);//针对每个X坐标，X的坐标显示居中
+        //底部X轴显示
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
@@ -136,7 +138,7 @@ public class CombinedChartActivity extends DemoBase {
         // data.setData(generateCandleData());
         data.setValueTypeface(tfLight);//字体
 
-        xAxis.setAxisMaximum(data.getXMax() + 0.5f);//base 0.25 change 0.5 show nice
+        xAxis.setAxisMaximum(data.getXMax() + 0.5f);//just show nice
 
         chart.setData(data);
         chart.invalidate();
@@ -148,6 +150,7 @@ public class CombinedChartActivity extends DemoBase {
 
         ArrayList<Entry> entries = new ArrayList<>();
 
+        //需要数据转换，外部传入数据，并处理
         for (int index = 0; index < count; index++)
             entries.add(new Entry(index + 0.5f, getRandom(5, 0)));
 
@@ -158,11 +161,10 @@ public class CombinedChartActivity extends DemoBase {
         // set.setCircleColor(Color.rgb(240, 238, 70));
         // set.setCircleRadius(0f);
         set.setFillColor(Color.rgb(240, 238, 70));
-        set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set.setMode(LineDataSet.Mode.CUBIC_BEZIER);//三次贝塞尔曲线
         set.setDrawValues(isShowValues);
         set.setValueTextSize(10f);
         set.setValueTextColor(Color.parseColor("#000000"));
-
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         d.addDataSet(set);
 
@@ -174,6 +176,7 @@ public class CombinedChartActivity extends DemoBase {
         ArrayList<BarEntry> entries1 = new ArrayList<>();
         ArrayList<BarEntry> entries2 = new ArrayList<>();
 
+        //需要数据转换，外部传入数据，并处理
         for (int index = 0; index < count; index++) {
             entries1.add(new BarEntry(0, getRandom(5, 0)));
 
@@ -200,7 +203,6 @@ public class CombinedChartActivity extends DemoBase {
         float barSpace = 0.1f; // x2 dataset
         float barWidth = 0.25f; // x2 dataset
         // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
-
 
         BarData d = new BarData(set2, set1);
         d.setBarWidth(barWidth);
